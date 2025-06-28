@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Star, Shield, Clock } from 'lucide-react';
 import { CLINIC_INFO, ROUTES } from '../../utils/constants';
 import Button from '../common/Button';
+import Logo from '../common/Logo';
 
 const Hero: React.FC = () => {
   const features = [
@@ -112,7 +113,7 @@ const Hero: React.FC = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right Content - Image/Illustration */}
+          {/* Right Content - Logo and Branding */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -120,20 +121,47 @@ const Hero: React.FC = () => {
             className="relative"
           >
             <div className="relative z-10">
-              {/* Placeholder for clinic image */}
-              <div className="bg-gradient-to-br from-pink-100 to-purple-100 rounded-2xl p-8 shadow-2xl">
-                <div className="aspect-square bg-gradient-to-br from-pink-200 to-purple-200 rounded-xl flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-24 h-24 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <span className="text-white text-3xl font-bold">T</span>
-                    </div>
-                    <h3 className="text-xl font-semibold text-gray-800 mb-2">
+              {/* Main Logo Display */}
+              <div className="bg-gradient-to-br from-pink-100 to-purple-100 rounded-3xl p-12 shadow-2xl">
+                <div className="flex flex-col items-center justify-center space-y-6">
+                  {/* Large Animated Logo */}
+                  <motion.div
+                    initial={{ scale: 0, rotate: -180 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ duration: 1, type: "spring", stiffness: 200, delay: 0.5 }}
+                  >
+                    <Logo size="xl" animated={true} />
+                  </motion.div>
+                  
+                  {/* Clinic Name */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 1 }}
+                    className="text-center"
+                  >
+                    <h2 className="text-3xl font-bold text-gray-800 mb-2">
                       {CLINIC_INFO.NAME}
-                    </h3>
-                    <p className="text-gray-600 text-sm">
+                    </h2>
+                    <p className="text-lg text-pink-600 font-medium mb-1">
+                      {CLINIC_INFO.TAGLINE}
+                    </p>
+                    <p className="text-sm text-gray-600">
                       Professional Beauty Clinic
                     </p>
-                  </div>
+                  </motion.div>
+                  
+                  {/* Decorative Elements */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 1, delay: 1.5 }}
+                    className="flex space-x-4"
+                  >
+                    <div className="w-3 h-3 bg-pink-400 rounded-full"></div>
+                    <div className="w-3 h-3 bg-purple-400 rounded-full"></div>
+                    <div className="w-3 h-3 bg-pink-400 rounded-full"></div>
+                  </motion.div>
                 </div>
               </div>
 

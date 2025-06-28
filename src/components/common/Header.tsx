@@ -5,6 +5,7 @@ import { Menu, X, User, Phone } from 'lucide-react';
 import { CLINIC_INFO, ROUTES } from '../../utils/constants';
 import { useAuth } from '../../context/AuthContext';
 import Button from './Button';
+import Logo from './Logo';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,11 +34,12 @@ const Header: React.FC = () => {
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center"
           >
-            <Link to={ROUTES.HOME} className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">T</span>
+            <Link to={ROUTES.HOME} className="flex items-center space-x-3">
+              <Logo size="md" animated={true} />
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-gray-900 leading-tight">{CLINIC_INFO.NAME}</span>
+                <span className="text-xs text-pink-600 font-medium">Beauty & Wellness</span>
               </div>
-              <span className="text-xl font-bold text-gray-900">{CLINIC_INFO.NAME}</span>
             </Link>
           </motion.div>
 

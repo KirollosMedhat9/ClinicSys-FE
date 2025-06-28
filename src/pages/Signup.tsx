@@ -6,6 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { ROUTES } from '../utils/constants';
 import Button from '../components/common/Button';
 import Input from '../components/common/Input';
+import Logo from '../components/common/Logo';
 
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -125,9 +126,9 @@ const Signup: React.FC = () => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="mx-auto w-16 h-16 bg-gradient-to-r from-pink-500 to-purple-600 rounded-full flex items-center justify-center mb-6"
+            className="flex justify-center mb-6"
           >
-            <span className="text-white text-2xl font-bold">T</span>
+            <Logo size="lg" animated={true} />
           </motion.div>
           <h2 className="text-3xl font-bold text-gray-900">Create your account</h2>
           <p className="mt-2 text-sm text-gray-600">
