@@ -10,15 +10,15 @@ export const CLINIC_SERVICE_URL = process.env.REACT_APP_CLINIC_SERVICE_URL || 'h
 // API Endpoints through API Gateway
 export const ENDPOINTS = {
   AUTH: {
-    LOGIN: '/auth-service/auth/login',
-    SIGNUP: '/auth-service/auth/signup',
-    REFRESH: '/auth-service/auth/refresh',
-    LOGOUT: '/auth-service/auth/logout',
-    VALIDATE: '/auth-service/auth/validate',
+    LOGIN: '/api/auth/login',
+    SIGNUP: '/api/auth/register',
+    REFRESH: '/api/auth/refresh',
+    LOGOUT: '/api/auth/logout',
+    VALIDATE: '/api/auth/validate',
   },
   USER: {
-    PROFILE: '/user-service/users/profile',
-    UPDATE: '/user-service/users/update',
+    PROFILE: '/api/users/profile',
+    UPDATE: '/api/users/update',
   },
 } as const;
 

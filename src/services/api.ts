@@ -50,15 +50,21 @@ class ApiService {
           try {
             const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
             if (refreshToken) {
-              const response = await this.api.post('/auth/refresh', {
-                refreshToken,
+              // Call refresh endpoint with Authorization header containing refresh token
+              const response = await this.api.post('/api/auth/refresh', {}, {
+                headers: {
+                  'Authorization': `Bearer ${refreshToken}`
+                }
               });
 
-              const { token } = response.data;
-              localStorage.setItem(STORAGE_KEYS.TOKEN, token);
-              
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-              return this.api(originalRequest);
+              const { data } = response.data;
+              if (data && data.token) {
+                localStorage.setItem(STORAGE_KEYS.TOKEN, data.token);
+                localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, data.refreshToken);
+
+                originalRequest.headers.Authorization = `Bearer ${data.token}`;
+                return this.api(originalRequest);
+              }
             }
           } catch (refreshError) {
             // Refresh token failed, redirect to login

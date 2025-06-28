@@ -1,4 +1,4 @@
-import { LoginRequest, SignupRequest, AuthResponse, User } from '../types/auth';
+import { LoginRequest, SignupRequest, AuthResponse, User, ApiResponse } from '../types/auth';
 import { ENDPOINTS, STORAGE_KEYS } from '../utils/constants';
 import apiService from './api';
 
@@ -7,17 +7,21 @@ export class AuthService {
     try {
       console.log('🔐 Attempting login with:', { email: credentials.email });
       console.log('📡 Login URL:', `${apiService.getBaseUrl()}${ENDPOINTS.AUTH.LOGIN}`);
-      
-      const response = await apiService.post<AuthResponse>(ENDPOINTS.AUTH.LOGIN, credentials);
-      
+
+      const response = await apiService.post<ApiResponse<AuthResponse>>(ENDPOINTS.AUTH.LOGIN, credentials);
+
       console.log('✅ Login successful:', response);
-      
+
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'Login failed');
+      }
+
       // Store tokens and user data
-      localStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.refreshToken);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
-      
-      return response;
+      localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.token);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refreshToken);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.user));
+
+      return response.data;
     } catch (error) {
       console.error('❌ Login failed:', error);
       throw this.handleError(error);
@@ -26,24 +30,28 @@ export class AuthService {
 
   async signup(userData: SignupRequest): Promise<AuthResponse> {
     try {
-      console.log('📝 Attempting signup with:', { 
-        firstName: userData.firstName, 
-        lastName: userData.lastName, 
-        email: userData.email 
+      console.log('📝 Attempting signup with:', {
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email
       });
       console.log('📡 Signup URL:', `${apiService.getBaseUrl()}${ENDPOINTS.AUTH.SIGNUP}`);
       console.log('📦 Full signup data:', userData);
-      
-      const response = await apiService.post<AuthResponse>(ENDPOINTS.AUTH.SIGNUP, userData);
-      
+
+      const response = await apiService.post<ApiResponse<AuthResponse>>(ENDPOINTS.AUTH.SIGNUP, userData);
+
       console.log('✅ Signup successful:', response);
-      
+
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'Signup failed');
+      }
+
       // Store tokens and user data
-      localStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
-      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.refreshToken);
-      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.user));
-      
-      return response;
+      localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.token);
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, response.data.refreshToken);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(response.data.user));
+
+      return response.data;
     } catch (error) {
       console.error('❌ Signup failed:', error);
       console.error('❌ Error details:', {
@@ -73,13 +81,17 @@ export class AuthService {
   async refreshToken(refreshToken: string): Promise<{ token: string }> {
     try {
       console.log('🔄 Attempting token refresh');
-      const response = await apiService.post<{ token: string }>(ENDPOINTS.AUTH.REFRESH, {
+      const response = await apiService.post<ApiResponse<AuthResponse>>(ENDPOINTS.AUTH.REFRESH, {
         refreshToken,
       });
-      
-      localStorage.setItem(STORAGE_KEYS.TOKEN, response.token);
+
+      if (!response.success || !response.data) {
+        throw new Error(response.message || 'Token refresh failed');
+      }
+
+      localStorage.setItem(STORAGE_KEYS.TOKEN, response.data.token);
       console.log('✅ Token refresh successful');
-      return response;
+      return { token: response.data.token };
     } catch (error) {
       console.error('❌ Token refresh failed:', error);
       throw this.handleError(error);

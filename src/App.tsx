@@ -6,7 +6,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
-import TestConnection from './components/common/TestConnection';
+// import TestConnection from './components/common/TestConnection';
 import CorsTest from './components/common/CorsTest';
 import { useAuth } from './context/AuthContext';
 // import './App.css';
@@ -77,12 +77,12 @@ const AppContent: React.FC = () => {
           </Routes>
         </main>
         {/* Show debugging tools in development */}
-        {process.env.NODE_ENV === 'development' && (
+        {/* {process.env.NODE_ENV === 'development' && (
           <>
             <TestConnection />
             <CorsTest />
           </>
-        )}
+        )} */}
       </div>
     </Router>
   );
